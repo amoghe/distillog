@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/amoghe/distillog.svg)](https://travis-ci.org/amoghe/distillog)
+
 # What is `distillog`?
 
 `distillog` is an _opinionated_ golang package that aims to provide the most
