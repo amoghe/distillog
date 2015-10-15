@@ -30,12 +30,13 @@ maintaining old log files and rotating them. Your logging library should not nee
 to care about this. Whatever facility (other libraries call this a "backend")
 messages are sent to should determine how old messages are handled.
 
-## But log file rotation is absolutely necessary!
+### But log file rotation is absolutely necessary!
 
 Agreed, and someone's gotta do it, but it need not be your logging library!
 
-You can use `distillog` along with a [lumberjack](https://github.com/natefinch/lumberjack) "backend". It provides an `io.WriteCloser` which performs all the magic you need. Initialize a logger
-using `distillog.NewStream`, pass it an instance of the `io.WriteCloser`
+You can use `distillog` along with a [lumberjack](https://github.com/natefinch/lumberjack)
+"backend". It provides an `io.WriteCloser` which performs all the magic you need. Initialize
+a logger using `distillog.NewStream`, pass it an instance of the `io.WriteCloser`
 that lumberjack returns, _et voila_, you have a logger that does what you need.
 
 ## And how is `distillog` different?
@@ -49,7 +50,8 @@ that lumberjack returns, _et voila_, you have a logger that does what you need.
 - avoid taking on any non-essential responsibilities (colors, _ahem_).
 
 By using an interface, you can write programs that aren't married to a particular
-logging system. Your program may offer a command-line switch like `--log-to=[syslog,stderr,file]`. With this, you can switch between logging to
+logging system. Your program may offer a command-line switch like `--log-to=[syslog,stderr,file]`.
+With this, you can switch between logging to
 various facilities by simply instantiating the appropriate logger.
 
 # Usage/examples:
