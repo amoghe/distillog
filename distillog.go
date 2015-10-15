@@ -1,4 +1,4 @@
-package regulog
+package distillog
 
 import (
 	"fmt"
