@@ -16,8 +16,9 @@ or too much ([glog](https://github.com/golang/glog)).
 Presenting varying levels of verbosity (or severity) are an important part of
 what makes a program more usable or debuggable. The stdlib has an approach that is
 too spartan (exposing only `Println` and friends) to be used directly in programs
-that wish to offer better control over their log output. This is a sufficient
-mechanism for small programs, but starts to feel insufficient very quickly.
+that wish to offer better control over their log output. This is a handy
+mechanism to print messages from small programs, but starts to feel insufficient
+very quickly.
 
 ## Too _much_, you say?
 
@@ -40,17 +41,19 @@ that lumberjack returns, _et voila_, you have a logger that does what you need.
 `distillog` restricts itself to:
 - presenting an interface so that you can swap different loggers.
 - providing logger implementations for logging to the most common backends
-	- streams (`stderr`, or files, via `io.WriteCloser`)
+	- streams - anything via `io.WriteCloser`, e.g. `stderr` or files
 	- syslog
-- avoid taking on any non-essential responsibilities.
+	- (over time, more backends may be added)
+- avoid taking on any non-essential responsibilities (colors, _ahem_).
 
 By using an interface, you can write programs that aren't married to a particular
-logging system. More importantly, you can switch between logging to stderr and
-syslog by simply instantiating an appropriate logger.
+logging system. Your program may offer a command-line switch like `--log-to=[syslog,stderr,file]`. With this, you can switch between logging to
+various facilities by simply instantiating the appropriate logger.
 
 # Usage/examples:
 
-As seen in the godoc, the interface is limited to:
+As seen in the [godoc](https://godoc.org/github.com/amoghe/distillog#Logger),
+the interface is limited to:
 
 ```golang
 type Logger interface {
@@ -70,7 +73,12 @@ type Logger interface {
 }
 ```
 
+`Close()` is provided so that you can have your program write to files and
+have something like `logrotate` manage your files (which notifies your program
+by sending `SIGHUP`, at which point you must reopen your log files).
+
 Log to stdout, or stderr using a logger instantiated like so:
+
 ```golang
 outLogger := distillog.NewStdoutLogger("test")
 
@@ -79,8 +87,8 @@ errLogger := distillog.NewStderrLogger("test")
 sysLogger := distillog.NewSyslogLogger("test")
 ```
 
-If you have a file you wish to log to, you should open the file and instantiate a logger
-using the file handle, like so:
+If you have a file you wish to log to, you should open the file and instantiate
+a logger using the file handle, like so:
 
 ```golang
 if fileHandle, err := ioutil.Tempfile("/tmp", "distillog-test"); err == nil {
@@ -88,7 +96,8 @@ if fileHandle, err := ioutil.Tempfile("/tmp", "distillog-test"); err == nil {
 }
 ```
 
-If you need a logger that manages the rotation of its own files, use `lumberjack`, like so:
+If you need a logger that manages the rotation of its own files, use `lumberjack`,
+like so:
 
 ```golang
 lumberjackHandle := &lumberjack.Logger{
