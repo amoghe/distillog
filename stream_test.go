@@ -181,3 +181,20 @@ func TestLevelErrorf(t *testing.T) {
 		t.Error("output does not contain message", got)
 	}
 }
+
+func BenchmarkThroughput(b *testing.B) {
+	strm := dummyStream{}
+	tlog := &streamLogger{
+		tag:     "TAG",
+		linebuf: []byte{},
+		stream:  &strm,
+	}
+
+	runParallelBody := func(pb *testing.PB) {
+		for pb.Next() {
+			tlog.Infoln("one", "iteration")
+		}
+	}
+
+	b.RunParallel(runParallelBody)
+}
