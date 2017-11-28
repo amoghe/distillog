@@ -112,6 +112,19 @@ errLogger := distillog.NewStderrLogger("test")
 sysLogger := distillog.NewSyslogLogger("test")
 ```
 
+Alternatively, you can use the package for your logging needs:
+
+```golang
+import log "github.com/amoghe/distillog"
+
+// ... later ...
+
+log.Infoln("Starting program")
+log.Debugln("initializing the frobnicator")
+log.Warningln("frobnicator failure detected, proceeding anyways...")
+log.Infoln("Exiting")
+```
+
 If you have a file you wish to log to, you should open the file and instantiate
 a logger using the file handle, like so:
 
@@ -133,6 +146,10 @@ lumberjackHandle := &lumberjack.Logger{
 }
 
 logger := distillog.NewStreamLogger("tag", lumberjackHandle)
+
+// Alternatively, configure the pkg level logger to emit here
+
+distillog.SetOutput(lumberjackHandle)
 ```
 
 Once instantiated, you can log messages, like so:
