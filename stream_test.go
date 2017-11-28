@@ -183,12 +183,7 @@ func TestLevelErrorf(t *testing.T) {
 }
 
 func BenchmarkThroughput(b *testing.B) {
-	strm := dummyStream{}
-	tlog := &streamLogger{
-		tag:     "TAG",
-		linebuf: []byte{},
-		stream:  &strm,
-	}
+	tlog := NewNullLogger("")
 
 	runParallelBody := func(pb *testing.PB) {
 		for pb.Next() {
@@ -198,3 +193,15 @@ func BenchmarkThroughput(b *testing.B) {
 
 	b.RunParallel(runParallelBody)
 }
+
+// func BenchmarkStdlibThroughput(b *testing.B) {
+// 	log.SetOutput(ioutil.Discard)
+
+// 	runParallelBody := func(pb *testing.PB) {
+// 		for pb.Next() {
+// 			log.Println("one", "iteration")
+// 		}
+// 	}
+
+// 	b.RunParallel(runParallelBody)
+// }
