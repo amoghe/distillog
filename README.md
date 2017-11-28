@@ -2,15 +2,16 @@
 
 # What is `distillog`?
 
-`distillog` aims to slightly enhance the stdlib `log` API by allowing programs
-to emit log messages with levels.
+`distillog` aims to offer a minimalistic logging interface that also supports
+log levels. It takes the `stdlib` API and only slightly enhances it. Hence, you
+could think of it as levelled logging, _distilled_.
 
 # Yet _another_ logging library for go(lang)?
 
 > Logging libraries are like opinions, everyone seems to have one -- Anon(?)
 
-Most other logging libraries do either too little ([stdlib][0])
-or too much ([glog][1]).
+Most other logging libraries do either __too little__ ([stdlib][0])
+or __too much__ ([glog][1]).
 
 ## Too _little_, you say?
 
