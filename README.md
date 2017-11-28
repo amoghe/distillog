@@ -13,7 +13,12 @@ could think of it as levelled logging, _distilled_.
 Most other logging libraries do either __too little__ ([stdlib][0])
 or __too much__ ([glog][1]).
 
-## Too _little_, you say?
+As with most other libraries, this one is opinionated. In terms of functionality
+it exposes, it attempts to sit somewhere between the stdlib and the majority of
+other logging libraries available (but leans mostly towards the spartan side
+of stdlib).
+
+## The stdlib does _too little_, you say?
 
 Just a smidge.
 
@@ -27,17 +32,18 @@ of some impending doom.
 
 In most cases, some downstream entity "knows" how to filter the messages and
 keep those that are relevant to the environment. As evidence of this, most
-other languages have log libraries that support levels. The golang stdlib takes
+other languages have log libraries that support levels. Similarly some programs
+offer varying verbosity levels (e.g. `-v`, `-vv` etc). The golang stdlib takes
 a much more spartan approach (exposing only `Println` and friends) so using it
 in programs to emit messages of varying interest/levels can get tedious (manual
 prefixes, anyone?). This is where `distillog` steps in. It aims to slightly
-improve on this minimalstic logging interface. _Slightly_.
+improve on this minimalstic logging interface. __Slightly__.
 
-## Too _much_, you say?
+## Other libraries do _too much_, you say?
 
 Ever used `log.Panicf` or `log.Fatalf`? Exiting your program is *not* something
 your log library should be doing! Similarly, other libraries offer options for
-maintaining old log files and rotating them. Your logging library should not need
+maintaining old log files and rotating them. Your logging library shouldn't need
 to care about this. Whatever facility (other libraries call this a "backend")
 messages are sent to should determine how old messages are handled. `distillog`
 prefers that you use `lumberjack` (or an equivalent WriteCloser) depending on
@@ -62,15 +68,16 @@ To this end, it restricts itself to:
 	- streams - e.g. stderr/stdout 
 	- files - anything via `io.WriteCloser` (via `lumberjack`)
 	- syslog
-- avoid taking on any non-essential responsibilities (colors, _ahem_).
-
+- avoid taking on any non-essential responsibilities (colors, _ahem_)
+- expose a logger interface, instead of an implementation
 
 ## Expose an interface? Why?
 
-By exposing an interface you can write programs that use levelled log messages.
-You can switch between logging to various facilities by simply instantiating the
-appropriate logger as determined by the caller (Your program may offer a
-command-line switch like so - `--log-to=[syslog,stderr,file]`)
+By exposing an interface you can write programs that use levelled log messages,
+but switch between logging to various facilities by simply instantiating the
+appropriate logger as determined by the caller (Your program can offer a
+command-line switch like so - `--log-to=[syslog,stderr,<file>]` and the simply
+instantiate the appropriate logger).
 
 # Usage/examples:
 
