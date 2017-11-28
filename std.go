@@ -59,9 +59,11 @@ func Close() {
 	std.Close()
 }
 
-// SetStream allows you to configure package level logger to emit to the
-// specified stream. NOTE: this is not safe when called concurrently from
-// multiple routines. This should typically be called during program startup
-func SetStream(s io.WriteCloser) {
-	std = NewStreamLogger("", s)
+// SetOutput allows you to configure the package level logger to emit to the
+// specified output stream.
+// NOTE: this is not safe when called concurrently from multiple goroutines.
+// This should typically be called once during program initialization before
+// spawning goroutines that may use the log.
+func SetOutput(out io.WriteCloser) {
+	std = NewStreamLogger("", out)
 }

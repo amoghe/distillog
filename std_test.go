@@ -8,7 +8,7 @@ import (
 func TestSetStream(t *testing.T) {
 	strm := &dummyStream{}
 
-	SetStream(strm)
+	SetOutput(strm)
 	Infoln("random message")
 
 	if !strings.Contains(strm.String(), "random message") {
