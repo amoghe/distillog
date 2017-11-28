@@ -1,5 +1,9 @@
 package distillog
 
+import (
+	"io"
+)
+
 //
 // This file exposes package level logging functions so that this package
 // can be used directly for logging (to stderr) without needing the caller
@@ -48,4 +52,16 @@ func Errorf(format string, v ...interface{}) {
 // Errorln logs a message to stderr at 'error' level
 func Errorln(v ...interface{}) {
 	std.Errorln(v...)
+}
+
+// Close closes the stream to which the default logger logs to
+func Close() {
+	std.Close()
+}
+
+// SetStream allows you to configure package level logger to emit to the
+// specified stream. NOTE: this is not safe when called concurrently from
+// multiple routines. This should typically be called during program startup
+func SetStream(s io.WriteCloser) {
+	std = NewStreamLogger("", s)
 }
