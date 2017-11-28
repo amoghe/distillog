@@ -60,20 +60,6 @@ func (w *streamLogger) output(timeStr, level, msg string) {
 	// We need to serialize access to the linebuffer that is used to assemble the message \
 	// as well as the output stream we will print to.
 	w.lock.Lock()
-	defer w.lock.Unlock()
-
-	// appends a fixed width string 'str' into byte buffer 'b'. Appends spaces if 'str' is too short.
-	fixedWidthStr := func(width int, str string, b []byte) []byte {
-		// Write as many bytes as 'width', writing spaces if we run out of chars
-		for i := 0; i < width; i++ {
-			if i < len(str) {
-				b = append(b, level[i])
-			} else {
-				b = append(b, ' ')
-			}
-		}
-		return b
-	}
 
 	// save memory, (re)use a buffer instead of relying on fmt.Sprintf to format the output string
 	w.linebuf = w.linebuf[:0]
@@ -95,6 +81,7 @@ func (w *streamLogger) output(timeStr, level, msg string) {
 	}
 
 	w.stream.Write(w.linebuf)
+	w.lock.Unlock()
 }
 
 func (w *streamLogger) Debugf(f string, v ...interface{}) {

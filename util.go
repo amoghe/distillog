@@ -20,3 +20,16 @@ func callerFileLine() (string, int) {
 	return "???", 0
 
 }
+
+// appends a fixed width string 'str' into byte buffer 'b'. Appends spaces if 'str' is too short.
+func fixedWidthStr(width int, str string, b []byte) []byte {
+	// Write as many bytes as 'width', writing spaces if we run out of chars
+	for i := 0; i < width; i++ {
+		if i < len(str) {
+			b = append(b, str[i])
+		} else {
+			b = append(b, ' ')
+		}
+	}
+	return b
+}
