@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/amoghe/distillog.svg)](https://travis-ci.org/amoghe/distillog)
+[![Documentation](https://godoc.org/github.com/amoghe/distillog?status.svg)](http://godoc.org/github.com/amoghe/distillog)
+[![Go Report Card](https://goreportcard.com/badge/github.com/amoghe/distillog)](https://goreportcard.com/report/github.com/amoghe/distillog)
 
 # What is `distillog`?
 
